@@ -1,0 +1,8 @@
+.card{
+
+    &__scroll{
+        background-color: $color-tertiary-dark;
+        height: 45vh;
+        overflow-y: scroll ;
+    }
+}

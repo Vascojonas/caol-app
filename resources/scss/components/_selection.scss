@@ -1,0 +1,88 @@
+
+.selection{  
+    @include clearfix;
+    &__btn{
+        float: left;
+        display: inline-block;
+        width: 50%;
+        
+        &--cliente{
+            @include respond(phone){
+                font-size: 1.2rem;
+            }
+
+            @include respond(phone){
+                font-size: 1.2rem;
+            }
+        }
+        &--consultor{
+            @include respond(tab-port){
+                padding: 1rem 2rem;
+                
+            }
+        }
+
+        @include respond(phone){
+            float: none;;
+            display: block;
+            width: 100%;
+        }
+    }
+
+    &__input{
+    
+        float: right;
+        display: inline-block;
+        width: 50%;
+
+        @include respond(phone){
+            margin-top: 2rem;
+            float: none;;
+            display: block;
+            width: 100%;
+        }
+    }
+
+    &__label{
+        display: inline-block;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-right: 2rem;
+        display: none;
+        @include respond(tab-port){
+            display: none;
+        }
+    }
+
+    &__from--text{
+        display: inline-block;
+        font-size: 1.5rem;
+        width: 2rem;
+
+    }
+
+    &__to--text{
+        display: inline-block;
+        font-size: 1.5rem;
+        width: 2rem;
+    }
+
+    &__from--input{
+        
+        display: inline-block;
+        width: 20rem;
+
+        @include respond(tab-port){
+            width: calc((100% - 2*2.5rem)/2);
+        }
+    }
+  
+
+    &__to--input{
+        display: inline-block;
+        width: 20rem;
+        @include respond(tab-port){
+            width: calc((100% - 2*2.5rem)/2);
+        }
+    }
+}
