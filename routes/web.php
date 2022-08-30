@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::get('comercial/consultores',[\App\Http\Controllers\AppController::class, 'getConsultores']);
+
+
 Route::get('/', function () {
     return view('welcome');
 });
