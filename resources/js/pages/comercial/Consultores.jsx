@@ -1,10 +1,22 @@
 import React, { useState } from 'react'
-import { useOutletContext } from 'react-router-dom';
+import { Outlet, useOutletContext } from 'react-router-dom';
+import Relatorios from './consultores_relatorio';
+import Graficos from './consultores_graficos';
 
-function Comercial() {
+function Consultores() {
 
     //lista de consultores selecionados
     const [consultores, setConsultores] = useOutletContext();
+
+    const [datas, setData]= useState({
+        inicio: '2007-01-01',
+        fim: '2022-01-01'
+    })
+
+    const [relatorio, setRelatorio]= useState(false);
+    const [graficos, setGraficos]= useState(true);
+    const [pizzas, setPizza]= useState(false);
+
 
     //lista de consultores selecionados
     const[selecionados, setSelecionados]=useState([]);
@@ -12,7 +24,34 @@ function Comercial() {
     const[Pesquisar, setPesquisar]=useState(false);
 
 
+    const visualizarRelatorios =()=>{
+        setRelatorio(!relatorio)
+        setGraficos(false);
+        setPizza(false);
+    }
+    const visualizarGraficos =()=>{
+        setGraficos(!graficos)
+        setRelatorio(false)
+        setPizza(false);
+    }
+    const visualizarPizza =()=>{
+        setPizza(!pizza)
+        setRelatorio(false)
+        setGraficos(false);
+    }
     
+
+    //funcao para actualizar periodo
+    const handleDate = (e) => {
+        e.persist();
+        setData({...datas, [e.target.name]: e.target.value })
+       
+        visualizarRelatorios();
+        visualizarGraficos();
+        visualizarPizza();
+        //console.log("Inicio",datas.inicio,  "fim", datas.fim);
+    }
+
     //funcao para pesquisar por nome
     const search= (e)=>{
 
@@ -40,78 +79,70 @@ function Comercial() {
     }
 
     //funcao para gest
-    const checkAction=(e, id, parent)=>{
+    const checkAction=(e, id)=>{
     
         if(e.target.checked){
-            
-            try {
-                
-                let child =document.getElementById(id);
-                document.getElementById(parent).removeChild(child);
-                document.getElementById('selected').appendChild(child);
-                console.log(child);
-            } catch (error) {
-                console.log(error);
-            }
 
-            //add selected item in  selecionados
+            //console.log(id);
+
+            let child =document.getElementById(id);
+            document.getElementById('selected').appendChild(child);
+
             let consultor = consultores.filter((item)=> item.co_usuario===id);
             let auxilist=[];
             auxilist.push(...selecionados);
             auxilist.push(...consultor);
             setSelecionados([...auxilist]);
 
-            //remove  selected item from  consultores
-            setConsultores(consultores.filter((data)=> data.co_usuario!==id));
+            //console.log(selecionados);
             
         }else{
 
-            try {
-                let child =document.getElementById(id);
-                document.getElementById('unselected').appendChild(child);
-                
-            } catch (error) {
-                console.log(error)
-            }
-
-            //add unselected item in  consultores
-            let consultor = selecionados.filter((item)=> item.co_usuario===id);
-            let auxilist=[];
-            auxilist.push(...consultores);
-            auxilist.push(...consultor);
-            setConsultores([...auxilist]);
-
-            //remove  selected item from  selecionados
+            let child =document.getElementById(id);
+            document.getElementById('unselected').appendChild(child);
             setSelecionados(selecionados.filter((data)=> data.co_usuario!==id));
+            //console.log(selecionados);
+
+            visualizarRelatorios()
         }
     }
 
     //lista de todos os consultores
-    var  CONSULTORES_HTML =consultores.map((consultor, key)=>{
+    let  CONSULTORES_HTML =consultores.map((consultor, key)=>{
         
-        return(
+        return (consultor.co_usuario)&&(
             <div key={key} id={consultor.co_usuario} className="card__list">
                 <span className="card__list--text paragraph">
                     {consultor.no_usuario}
                 </span>
-                <input onClick={(e)=>{checkAction(e,consultor.co_usuario, 'unselected')}} value={consultor.co_usuario} className='card__list--checkbox' type="checkbox"></input>
+                <input onClick={(e)=>{checkAction(e,consultor.co_usuario)}} value={consultor.co_usuario} className='card__list--checkbox' type="checkbox"></input>
             </div>
         )
     })
 
+    let RELATORIOS_HTML = selecionados.map((item, key)=>{
+        return(
+            <section key={key} className='relatorio-section'>
+                <Relatorios  consultor={item}  periodo={datas}/>
+            </section>
+        )
+    })
 
-    if(!searchValue){
-        var PESQUISA_HTML = searchValue.map((consultor, key)=>{
-            return(
-                <div key={key} id={consultor.co_usuario} className="card__list">
-                    <span className="card__list--text paragraph">
-                        {consultor.no_usuario}
-                    </span>
-                    <input onClick={(e)=>{checkAction(e,consultor.co_usuario,'pesquisa_unselected')}} value={consultor.co_usuario} className='card__list--checkbox' type="checkbox"></input>
-                </div>
-            )
-        })
-    }
+    let GRAFICOS_HTML = selecionados.map((item, key)=>{
+        return(
+            <section key={key} className='relatorio-section'>
+                <Graficos  consultor={item}  periodo={datas}/>
+            </section>
+        )
+    })
+
+    let PIZZA_HTML = selecionados.map((item, key)=>{
+        return(
+            <section key={key} className='relatorio-section'>
+                <Relatorios  consultor={item}  periodo={datas}/>
+            </section>
+        )
+    })
 
   return (
     <main>
@@ -134,9 +165,12 @@ function Comercial() {
                 <div className="selection__input form_group  u-margin-bottom-small ">
                     <label htmlFor="email" className="selection__label mr-1">Período: </label>
                     <span className="selection__from--text ">De </span>
-                    <input className="selection__from--input form__input " type="date" />
+                    <input className="selection__from--input form__input " name='inicio' type="date" value={datas.inicio}
+                       placeholder="dd-mm-yyyy" min="2000-01-01"   onChange={handleDate} />
                     <span  className="selection__to--text">Até </span>
-                    <input className="selection__to--input  form__input " type="date" />
+                   
+                    <input className="selection__to--input  form__input " name='fim' type="date" value={datas.fim}
+                       placeholder="dd-mm-yyyy" min="2000-01-01" onChange={handleDate}  />
                 </div>
 
 
@@ -144,7 +178,7 @@ function Comercial() {
             
             <div className="u-margin-top-small">
                 <h2 className="heading-secondary">
-                Consultores
+                    Consultores com relatorios
                 </h2>
             </div>
 
@@ -174,15 +208,39 @@ function Comercial() {
 
             <div className="realtorio">
                 <div className="relatorio__btn">
-                    <button className="relatorio__btn btn btn--green ">Relatório</button>
-                    <button className="relatorio__btn btn btn--green ">Gráfico</button>
-                    <button className="relatorio__btn btn btn--green ">Pizza</button>
+                    <button onClick={visualizarRelatorios} to="consultores/relatores" className="relatorio__btn--relatorio btn  ">Relatório</button>
+                    <button onClick={visualizarGraficos} className="relatorio__btn--grafico btn  ">Gráfico</button>
+                    <button onClick={visualizarPizza} className="relatorio__btn--pizza btn  ">Pizza</button>
                 </div>
             </div>
         </section>
-    
+
+        {(relatorio)&&
+            (
+              <div className='relatorios-section'>
+                 { RELATORIOS_HTML }
+              </div>
+            )
+        }
+
+        {(graficos)&&
+            (
+              <div className='relatorios-section'>
+                 { GRAFICOS_HTML }
+              </div>
+            )
+        }
+
+        {(pizzas)&&
+            (
+              <div className='relatorios-section'>
+                 { PIZZA_HTML }
+              </div>
+            )
+        }
+                    
     </main>
   )
 }
 
-export default Comercial;
+export default Consultores;

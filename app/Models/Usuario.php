@@ -49,4 +49,9 @@ class Usuario extends Model
     {
         return $this->hasOne(PermissaoSistema::class);
     }
+
+    public function salario()
+    {
+        return $this->hasOne(Salario::class);
+    }
 }

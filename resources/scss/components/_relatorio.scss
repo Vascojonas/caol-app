@@ -1,5 +1,8 @@
 .relatorio{
+    @include clearfix;
     &__btn{
+
+        float: right;
         @include respond(phone){
             font-size: 1.2rem;
         }
@@ -7,5 +10,24 @@
         @include respond(phone){
             font-size: 1.2rem;
         }
+
+        &--relatorio{
+           background-color:  $color-secondary-dark;
+        }
+
+        &--grafico{
+            background-color: $color-tertiary-light;   
+        }
+
+        &--pizza{
+            background-color: $color-primary-light;
+        }
+    }
+
+    &__tabela{
+        font-size: $default-font-size;
+        text-align: center;
+        text-transform: uppercase;
+
     }
 }

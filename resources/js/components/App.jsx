@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./layout/Header";
-import Comercial from "../pages/Comercial";
+import Consultores from "../pages/comercial/Consultores";
 
 import axios from 'axios';
 
@@ -17,7 +17,7 @@ function App() {
     <BrowserRouter>
         <Routes>
           <Route path="/" element={<Header />}>
-              <Route path="/" element={<Comercial/>}/>
+              <Route path="/" element={<Consultores/>}/>
           </Route>
         </Routes>
     </BrowserRouter>
