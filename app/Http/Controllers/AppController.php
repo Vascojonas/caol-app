@@ -37,7 +37,7 @@ class AppController extends Controller
     }
 
 
-    function relatorios($consultor, $inicio, $fim){
+    function consultorRelatorios($consultor, $inicio, $fim){
         $relatorios = DB::table('cao_os')
         ->rightJoin('cao_fatura', 'cao_fatura.co_os','=','cao_os.co_os')
         ->leftJoin('cao_usuario', 'cao_os.co_usuario', '=', 'cao_usuario.co_usuario')
@@ -58,6 +58,40 @@ class AppController extends Controller
             return response()->json([
                 'status'=> 404,
                 'relatorios'=> $relatorios,
+            ]);
+        }
+    }
+
+    function consultoresGraficos($data){
+        $ano=$data;
+        
+        if(count((explode("-", $data)))==3){
+            $ano = (explode("-", $data)[0]);
+        }
+        
+        $inicio = $ano.'-01-01';
+        $fim = $ano.'-12-31';
+
+
+        $graficos = DB::table('cao_os')
+        ->rightJoin('cao_fatura', 'cao_fatura.co_os','=','cao_os.co_os')
+        ->leftJoin('cao_usuario', 'cao_os.co_usuario', '=', 'cao_usuario.co_usuario')
+        ->leftJoin('cao_salario', 'cao_usuario.co_usuario', '=','cao_salario.co_usuario')
+        ->where('data_emissao','>=', $inicio)
+        ->where('data_emissao','<=', $fim)
+        ->orderBy('cao_fatura.data_emissao', 'desc')
+        ->get();
+
+        if($graficos){
+    
+            return response()->json([
+                'status'=> 200,
+                'graficos'=> $graficos,
+            ]);
+        }else{
+            return response()->json([
+                'status'=> 404,
+                'graficos'=> $graficos,
             ]);
         }
     }

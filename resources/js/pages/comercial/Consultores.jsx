@@ -13,8 +13,10 @@ function Consultores() {
         fim: '2022-01-01'
     })
 
+    const [anosEntre, setAnos]=useState([2007,2008,2009,2010]);
+
     const [relatorio, setRelatorio]= useState(false);
-    const [graficos, setGraficos]= useState(true);
+    const [graficos, setGraficos]= useState(false);
     const [pizzas, setPizza]= useState(false);
 
 
@@ -45,6 +47,16 @@ function Consultores() {
     const handleDate = (e) => {
         e.persist();
         setData({...datas, [e.target.name]: e.target.value })
+
+
+        let inicio = ((datas.inicio).split("-"))[0];
+        let fim = ((datas.fim).split("-"))[0];
+
+        let yearsBetween =[];
+        for(let i=inicio; i <= fim ; i++){
+            yearsBetween.push(i);
+        }
+        setAnos(yearsBetween);
        
         visualizarRelatorios();
         visualizarGraficos();
@@ -103,7 +115,9 @@ function Consultores() {
             setSelecionados(selecionados.filter((data)=> data.co_usuario!==id));
             //console.log(selecionados);
 
-            visualizarRelatorios()
+            setPizza(false);
+            setRelatorio(false)
+            setGraficos(false);
         }
     }
 
@@ -128,10 +142,11 @@ function Consultores() {
         )
     })
 
-    let GRAFICOS_HTML = selecionados.map((item, key)=>{
+    let GRAFICOS_HTML = anosEntre.map((ano, key)=>{
+        console.log(ano);
         return(
-            <section key={key} className='relatorio-section'>
-                <Graficos  consultor={item}  periodo={datas}/>
+            <section key={key} className='graficos-section'>
+                <Graficos  consultores={selecionados}  periodo={ano}/>
             </section>
         )
     })
@@ -139,7 +154,7 @@ function Consultores() {
     let PIZZA_HTML = selecionados.map((item, key)=>{
         return(
             <section key={key} className='relatorio-section'>
-                <Relatorios  consultor={item}  periodo={datas}/>
+                <Relatorios  consultores={selecionados}  periodo={datas}/>
             </section>
         )
     })
@@ -225,7 +240,7 @@ function Consultores() {
 
         {(graficos)&&
             (
-              <div className='relatorios-section'>
+              <div className=''>
                  { GRAFICOS_HTML }
               </div>
             )
