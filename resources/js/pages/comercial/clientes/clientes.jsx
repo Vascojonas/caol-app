@@ -19,7 +19,7 @@ function clientes() {
  
      const [relatorio, setRelatorio]= useState(false);
      const [graficos, setGraficos]= useState(false);
-     const [pizza, setPizza]= useState(true);
+     const [pizza, setPizza]= useState(false);
  
  
      //lista de clientes selecionados

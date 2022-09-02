@@ -127,9 +127,9 @@ class AppController extends Controller
 
 
         $relatorios = DB::table('cao_fatura')
-        ->lefttJoin('cao_os', 'cao_fatura.co_os','=','cao_os.co_os')
+        ->leftJoin('cao_os', 'cao_fatura.co_os','=','cao_os.co_os')
         ->leftJoin('cao_cliente', 'cao_fatura.co_cliente', '=', 'cao_cliente.co_cliente')
-        ->where('cao_fatura.co_usuario', '<>',null)
+        ->where('cao_fatura.co_cliente', '<>',null)
         ->where('data_emissao','>=', $inicio)
         ->where('data_emissao','<=', $fim)
         ->orderBy('cao_fatura.data_emissao', 'desc')
