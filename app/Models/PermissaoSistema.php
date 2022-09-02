@@ -13,7 +13,7 @@ class PermissaoSistema extends Model
     
     protected $fillable=[
         'co_usuario',                             
-        'co_tio_usuario',                             
+        'co_tipo_usuario',                             
         'co_sistem',                               
         'cin_ativo',                                
         'co_usuario_atualizacao',                              

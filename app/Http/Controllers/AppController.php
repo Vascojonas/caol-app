@@ -12,12 +12,15 @@ class AppController extends Controller
         $consultores = DB::table('cao_usuario')
         ->leftJoin('permissao_sistema', 
         'permissao_sistema.co_usuario','=', 'cao_usuario.co_usuario')
-        ->leftJoin('cao_salario', 'cao_salario.co_usuario', '=','cao_usuario.co_usuario')
+        ->rightJoin('cao_salario', 'cao_salario.co_usuario', '=','cao_usuario.co_usuario')
         ->where('permissao_sistema.in_ativo','S')
-        ->where('permissao_sistema.co_sistema',1)
-        ->where('permissao_sistema.co_tipo_usuario',0)
-        ->orWhere('permissao_sistema.co_tipo_usuario',1)
-        ->orWhere('permissao_sistema.co_tipo_usuario',2)
+        ->Where('permissao_sistema.co_sistema', '=', 1)
+        ->where(function ($query) {
+            $query->where('permissao_sistema.co_sistema', '=', 0)
+                  ->orWhere('permissao_sistema.co_sistema', '=', 1)
+                  ->orWhere('permissao_sistema.co_sistema', '=', 2);
+        })
+        ->where('cao_salario.co_usuario','<>', null)
         ->orderBy('cao_salario.co_usuario', 'desc')
         ->select('cao_usuario.*')
         ->get();

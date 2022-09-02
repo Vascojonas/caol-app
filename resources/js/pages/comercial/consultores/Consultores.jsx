@@ -107,6 +107,9 @@ function Consultores() {
             auxilist.push(...consultor);
             setSelecionados([...auxilist]);
 
+            setPizza(false);
+
+
             //console.log(selecionados);
             
         }else{
