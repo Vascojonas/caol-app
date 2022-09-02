@@ -1,12 +1,16 @@
 import ReactReact, {useState, useEffect}  from 'react'
 
-function consultores_graficos({consultores, periodo}) {
+function Clientes_graficos({clientes, periodo}) {
     const [dados, setDados]=useState([]);
     const inicio = periodo.inicio;
     const fim = periodo.fim;
 
+
+    
+
+
   useEffect(() => {
-    axios.get(`comercial/consultores/graficos/${periodo}`
+    axios.get(`comercial/clientes/graficos/${periodo}`
     ).then(res=>{
       if(res.status === 200)
       {
@@ -42,7 +46,7 @@ function consultores_graficos({consultores, periodo}) {
           }
         })
            
-          console.log(datasAux);
+          //console.log(datasAux);
           setDados(datasAux);
         
       }
@@ -53,7 +57,7 @@ function consultores_graficos({consultores, periodo}) {
 const GRAFICOS_HTML=dados.map((data)=>{
         let subdados=data[Object.keys(data)[0]];
         //console.log("data", Object.keys(data)[0])
-          
+        
         let totalReceitaMensal=0
         return (
           
@@ -62,30 +66,43 @@ const GRAFICOS_HTML=dados.map((data)=>{
                 
                 {
 
-                  consultores.map((consultor)=>{
-                    //  console.log("consultor", consultor.co_usuario)
+                  clientes.map((cliente)=>{
+                    //  console.log("cliente", cliente.co_usuario)
                       
-                       let totalReceitaConsultor=0
+                       let totalReceitacliente=0
                         subdados.map((item)=>{
-                          if(consultor.co_usuario===item.co_usuario){
-                            totalReceitaConsultor += item.valor - (item.valor*item.total_imp_inc/100);
+                          if(cliente.co_cliente===item.co_cliente){
+                            totalReceitacliente += item.valor - (item.valor*item.total_imp_inc/100);
                           }
                         })
-                        totalReceitaConsultor=Math.round((totalReceitaConsultor) * 100) / 100 ;
-                        totalReceitaMensal += totalReceitaConsultor;
-                        console.log(totalReceitaConsultor)
+                        totalReceitacliente=Math.round((totalReceitacliente) * 100) / 100 ;
+                        totalReceitaMensal += totalReceitacliente;
+                        console.log(totalReceitacliente)
                         return(
-                            <td className='graficos__td' style={{height: `calc(((${totalReceitaConsultor} * 32rem /320000 ))`}} > 
-                                <span class="graficos__td--valor data">{totalReceitaConsultor}</span>
-                             </td>
+                            <>
+                            <td className='graficos__td' style={{height: `calc(((${totalReceitacliente} * 32rem /320000 ))`}} > 
+                                <span class="data ">{totalReceitacliente} </span>
+                               
+                             </td> 
+                            </>
                         )
                      }) 
                 }
+
+                
             </tr>  
         )
       })
 
 
+      const GRAFICO_LEGENDA = clientes.map((c)=>{
+        return(
+
+              <li>
+                  {c.no_fantasia}
+              </li>
+        )
+      })
 
 
 
@@ -101,19 +118,18 @@ const GRAFICOS_HTML=dados.map((data)=>{
           </tr>
         </thead>
         <tbody className=' graficos__tbody'>
-            
-         {/* <tr>
-              <th scope="row">Mes</th>
-
-                <td > <span className="data"> 20 </span> </td>
-                <td > <span className="data"> 50 </span> </td>
-                <td > <span className="data"> 100 </span> </td>
-                <td > <span className="data"> 70 </span> </td>
-                <td > <span className="data"> 40 </span> </td>
-          </tr>*/}
+          
           {GRAFICOS_HTML}
-        
+
       </tbody>
+            <div className='legenda charts-legenda-css  u-margin-top-small'>
+                  <h2 className='legenda__titulo'>Legendas</h2>
+                  <ul className='legenda__ul'>
+                      <ol>
+                          {GRAFICO_LEGENDA}
+                      </ol>
+                  </ul>
+             </div>
     </table>
 
     </div>
@@ -121,4 +137,4 @@ const GRAFICOS_HTML=dados.map((data)=>{
   )
 }
 
-export default consultores_graficos
+export default Clientes_graficos

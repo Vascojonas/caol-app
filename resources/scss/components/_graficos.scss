@@ -1,12 +1,13 @@
 
 
 .graficos{
-
-    position: relative !important;
-    height: 32rem !important;
+    height: 40rem !important;
+    width: calc(100vw - 3*$default-padding);
+    overflow-x: auto;
 
     &__td{
         color: $color-black;
+        position: relative !important;
         &--valor{
             display: inline-block;
           
@@ -40,4 +41,29 @@
     transform: skewY(-45deg);
     transform-origin: top;
     background-color: lightgrey;
+  }
+
+  .legenda{
+        font-size: $default-font-size;
+
+        &__box{
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-right: 7px;
+            
+        }
+  }
+
+
+  .pizza{
+
+      width: 100% !important;
+    &__legenda{
+        font-size: $default-font-size;
+    }
+
+    &__grafico{
+        transform: scale(8rem) !important;
+    }
   }

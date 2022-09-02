@@ -40,7 +40,8 @@
           width: calc(100% * var(--size, 1));
           height: 100%;
 
-          position: relative; // For tooltips
+          position: absolute; // For tooltips
+          top:-3px;
         }
 
       }
@@ -60,6 +61,8 @@
 
           td {
             justify-content: flex-end;
+            position: absolute;
+            top:-3px;
           }
         }
       }

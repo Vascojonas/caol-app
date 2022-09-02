@@ -1,5 +1,9 @@
 .relatorio{
     @include clearfix;
+
+    width: calc(100vw - 3*$default-padding);
+    overflow-x: auto;
+
     &__btn{
 
         float: right;

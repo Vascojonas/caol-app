@@ -43,7 +43,7 @@
           height: 100%;
 
           position: absolute;
-          top: 0;
+          top: -40px;
           right: 0;
           bottom: 0;
           left: 0;
@@ -52,7 +52,7 @@
           &::before{
             content: "";
             position: absolute;
-            top: 0;
+            top: -40px;
             right: 0;
             bottom: 0;
             left: 0;
@@ -99,6 +99,8 @@
 
           td {
             align-items: flex-end;
+            position: absolute;
+            top: -7px
           }
         }
       }
@@ -143,7 +145,7 @@
           }
 
           .data {
-            transform: translateX(50%);
+            transform: translateX(-55%);
           }
 
           &::after {
@@ -166,7 +168,7 @@
           }
 
           .data {
-            transform: translateX(-50%);
+            transform: translateX(-55%);
           }
 
           &::after {
@@ -191,7 +193,7 @@
           }
 
           .data {
-            transform: translateX(50%);
+            transform: translateX(55%);
           }
 
           &::after {
@@ -214,7 +216,7 @@
           }
 
           .data {
-            transform: translateX(-50%);
+            transform: translateX(-80%);
           }
 
           &::after {

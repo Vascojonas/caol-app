@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Outlet, useOutletContext } from 'react-router-dom';
+import {useOutletContext, NavLink } from 'react-router-dom';
 import Relatorios from './consultores_relatorio';
 import Graficos from './consultores_graficos';
+import PieChart from './consultores_pizza';
 
 function Consultores() {
 
@@ -13,11 +14,11 @@ function Consultores() {
         fim: '2022-01-01'
     })
 
-    const [anosEntre, setAnos]=useState([2007,2008,2009,2010]);
+    const [anosEntre, setAnos]=useState([2007]);
 
     const [relatorio, setRelatorio]= useState(false);
     const [graficos, setGraficos]= useState(false);
-    const [pizzas, setPizza]= useState(false);
+    const [pizza, setPizza]= useState(false);
 
 
     //lista de consultores selecionados
@@ -58,9 +59,9 @@ function Consultores() {
         }
         setAnos(yearsBetween);
        
-        visualizarRelatorios();
-        visualizarGraficos();
-        visualizarPizza();
+        setPizza(false);
+        setRelatorio(false)
+        setGraficos(false);
         //console.log("Inicio",datas.inicio,  "fim", datas.fim);
     }
 
@@ -143,7 +144,7 @@ function Consultores() {
     })
 
     let GRAFICOS_HTML = anosEntre.map((ano, key)=>{
-        console.log(ano);
+    
         return(
             <section key={key} className='graficos-section'>
                 <Graficos  consultores={selecionados}  periodo={ano}/>
@@ -151,10 +152,10 @@ function Consultores() {
         )
     })
 
-    let PIZZA_HTML = selecionados.map((item, key)=>{
+    let PIZZA_HTML = anosEntre.map((ano, key)=>{
         return(
             <section key={key} className='relatorio-section'>
-                <Relatorios  consultores={selecionados}  periodo={datas}/>
+                <PieChart  consultores={selecionados}  periodo={ano}/>
             </section>
         )
     })
@@ -173,8 +174,8 @@ function Consultores() {
             <div className="selection u-margin-top-big">
 
                 <div className="selection__btn">
-                    <button className="selection__btn--consultor btn btn--green btn--small mr-5">Consultores</button>
-                    <button className="selection__btn--cliente btn btn--green btn--small">Clientes</button>
+                    <NavLink to={'/'} className="selection__btn--consultor btn btn--green btn--small mr-5">Consultores</NavLink>
+                    <NavLink  to={'/comercial/clientes'} className="selection__btn--cliente btn btn--green btn--small">Clientes</NavLink>
                 </div>
 
                 <div className="selection__input form_group  u-margin-bottom-small ">
@@ -193,7 +194,7 @@ function Consultores() {
             
             <div className="u-margin-top-small">
                 <h2 className="heading-secondary">
-                    Consultores com relatorios
+                    Consultores
                 </h2>
             </div>
 
@@ -240,13 +241,13 @@ function Consultores() {
 
         {(graficos)&&
             (
-              <div className=''>
+              <div className='u-margin-top-big'>
                  { GRAFICOS_HTML }
               </div>
             )
         }
 
-        {(pizzas)&&
+        {(pizza)&&
             (
               <div className='relatorios-section'>
                  { PIZZA_HTML }

@@ -88,10 +88,23 @@ const calculoComissao = (faturas)=>{
 }
   
   
+  let total_lucro=0;
+  let total_comissao=0;
+  let total_custo_fixo=0;
+  let total_receita=0;
+
+  let i=0;
+  let ultimaLinha=false;
   const RELATORIOS_HTML= relatorios.map((item, key)=>{
           let subdata=item[Object.keys(item)[0]];
           let periodo= (Object.keys(item)[0]).split('-');
           periodo = periodo[1]+'-'+ periodo[0];
+
+          if(i == relatorios.length-1){
+            //console.log("Ultimo",relatorios.length);
+           ultimaLinha=true
+         }
+         i++;
 
           let receitaLiquida =calculoReceitaLiquida(subdata);
           
@@ -101,14 +114,33 @@ const calculoComissao = (faturas)=>{
           
           let lucro = receitaLiquida- (custoFixo+comissao);
           lucro = Math.round((lucro) * 100) / 100
+          
+          total_lucro       +=lucro;
+          total_comissao    +=comissao;
+          total_custo_fixo  +=custoFixo;
+          total_receita     +=receitaLiquida;
+         
           return (
-                <tr key={key}>
-                  <th>{periodo}</th>
-                  <td>{receitaLiquida}</td>
-                  <td>{custoFixo}</td>
-                  <td>{comissao}</td>
-                  <td>{lucro}</td>
+            <>
+              <tr key={key}>
+                <th>{periodo}</th>
+                <td>{receitaLiquida}</td>
+                <td>{custoFixo}</td>
+                <td>{comissao}</td>
+                <td>{lucro}</td>
+              </tr>
+
+             { (ultimaLinha)&&(
+                <tr>
+                <th>Total</th>
+                <td>{Math.round((total_receita) * 100) / 100}</td>
+                <td>{Math.round((total_custo_fixo) * 100) / 100}</td>
+                <td>{Math.round((total_comissao) * 100) / 100}</td>
+                <td>{Math.round(( total_lucro) * 100) / 100 }</td>
                 </tr>
+              )}
+            
+            </>
             )
     })
 

@@ -1,10 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import {Outlet} from 'react-router-dom'; 
+import Logo from './logo.png'
 
 
 function Header() {
 
     const [consultores, setConsultores]=useState([]);
+    const [clientes, setClientes]=useState([]);
+
 
     useEffect(() => {
          axios.get('comercial/consultores').then(res=>{
@@ -48,7 +51,7 @@ function Header() {
 
             <header className="header">
                 <div className="header__box">
-                    <img className="header__box--logo" src={"img/logo.png"} alt="logo"/>
+                    <img className="header__box--logo" src={Logo} alt="logo"/>
                 </div>
 
             
