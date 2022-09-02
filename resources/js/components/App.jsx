@@ -11,7 +11,9 @@ axios.defaults.headers.common = {
   'X-CSRF-TOKEN': window.csrf_token
 };
 
-axios.defaults.baseURL = "http://localhost:8000/";
+//axios.defaults.baseURL = "http://localhost:8000/";
+axios.defaults.baseURL = "http://phplaravel-831378-2861340.cloudwaysapps.com/";
+
 
 function App() {
   return (
